@@ -80,6 +80,7 @@ How-to: within Arduino App, go to **Sketch -> Include Library -> Manage Librarie
 * **MQTT** [Link](https://github.com/256dpi/arduino-mqtt): by Joel Gaehwiller, Version `2.4.7`
 * **Google Cloud IoT Core JWT** [Link](https://github.com/GoogleCloudPlatform/google-cloud-iot-arduino): by Vladimir Korukov, Version `1.1.10`
 * **ArduinoJson** [Link](https://arduinojson.org/?utm_source=meta&utm_medium=library.properties): by Benoit Blanchon, Version `6.16.1` 
+* **DHT** [Link](https://github.com/adafruit/DHT-sensor-library): by Adafruit, Version `1.4.0`
 
 
 
@@ -188,6 +189,7 @@ To make sure your gas sensor works successfully, just use your lighter and relea
 
 * Enable the Cloud IoT Core API by opening the [Google Cloud IoT Core console](https://console.cloud.google.com/iot/)
 * Next, create your device registry as described in [the Quickstart](https://cloud.google.com/iot/docs/quickstart) or by using the [Google Cloud SDK](https://cloud.google.com/sdk).
+* Follow **Google Cloud IoT JWT** [Link](https://github.com/GoogleCloudPlatform/google-cloud-iot-arduino) for creating your .pem by openssl. 
 * Once you've tested your Pub/Sub using PowerShell commands, you can turn to the ESP8266 code part.
 
 #### ESP on arduino IDE part
@@ -316,7 +318,18 @@ String getSensor(String data, unsigned long padding_in_second)
 * Just to clarify, the `iat` variable here is a `long` value that denotes the starting timestamp that we boot the device. It will fetch the date time through WIFI, as we know that our ESP8266 doesn't have a clocking system that could know what time it is at a given time. 
 * Therefore, we will use the `iat` and a padding (in second) value to calculate the timestamp. We could not do that in our Arduino as it cannot even fetch time data, so we cannot help but deserialize the data to make it to become a JSON object again, and then insert our timestamp into the JSON. Finally, we still return it as a String.
 
+### Step 6. DHT 22 for temperature & humidity monitoring
+
+* We will want to do Temperature Monitoring With DHT22. It is pretty straightforward.
+* You have to install this library [Link](https://github.com/adafruit/DHT-sensor-library) in your arduino manager to enable the monitor.
+* Temperature is in Celsius, and Humidity is ranging from 0 to 100%.
+* [Link](https://create.arduino.cc/projecthub/mafzal/temperature-monitoring-with-dht22-arduino-15b013)
+
+
+
 ## Some Sample Commands in Google Power Shell
+
+* Follow this tutorial: [Link] (https://github.com/GoogleCloudPlatform/google-cloud-iot-arduino)
 
 ### Create Subscription
 
@@ -343,12 +356,8 @@ $ openssl ec -in ec_private.pem -pubout -out ec_public.pem
 $ gcloud iot devices create atest-dev --region=us-central1 \
   --registry=air-quality-core \
   --public-key path=ec_public.pem,type=es256
-Created device [atest-dev].
+Created device [atest-dev]. 
 ```
-
-
-
-* See more on GCP [Quickstart](https://cloud.google.com/iot/docs/quickstart) 
 
 ## Result
 
@@ -356,15 +365,15 @@ Created device [atest-dev].
 
 ```
 adrianhsu1995@cloudshell:~ (iot-air-quality-monitor)$ gcloud pubsub subscriptions pull --limit 500 --auto-ack device-subscription
-┌────────────────────────────────────────────────────┬──────────────────┬──────────────┬────────────────────────────────────┬──────────────────┐
-│                        DATA                        │    MESSAGE_ID    │ ORDERING_KEY │             ATTRIBUTES             │ DELIVERY_ATTEMPT │
-├────────────────────────────────────────────────────┼──────────────────┼──────────────┼────────────────────────────────────┼──────────────────┤
-│ {"density":16,"ad_value":1,"timestamp":1604726616} │ 1707598040029101 │              │ deviceId=atest-dev                 │                  │
-│                                                    │                  │              │ deviceNumId=2580803067423718       │                  │
-│                                                    │                  │              │ deviceRegistryId=air-quality-core  │                  │
-│                                                    │                  │              │ deviceRegistryLocation=us-central1 │                  │
-│                                                    │                  │              │ projectId=iot-air-quality-monitor  │                  │
-│                                                    │                  │              │ subFolder=                         │                  │
-└────────────────────────────────────────────────────┴──────────────────┴──────────────┴────────────────────────────────────┴──────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────┬──────────────────┬──────────────┬────────────────────────────────────┬──────────────────┐
+│                                        DATA                                       │    MESSAGE_ID    │ ORDERING_KEY │             ATTRIBUTES             │ DELIVERY_ATTEMPT │
+├───────────────────────────────────────────────────────────────────────────────────┼──────────────────┼──────────────┼────────────────────────────────────┼──────────────────┤
+│ {"density":16,"ad_value":5,"humidity":50,"temperature":20,"timestamp":1605123792} │ 1724380540105952 │              │ deviceId=atest-dev                 │                  │
+│                                                                                   │                  │              │ deviceNumId=2580803067423718       │                  │
+│                                                                                   │                  │              │ deviceRegistryId=air-quality-core  │                  │
+│                                                                                   │                  │              │ deviceRegistryLocation=us-central1 │                  │
+│                                                                                   │                  │              │ projectId=iot-air-quality-monitor  │                  │
+│                                                                                   │                  │              │ subFolder=                         │                  │
+└───────────────────────────────────────────────────────────────────────────────────┴──────────────────┴──────────────┴────────────────────────────────────┴──────────────────┘
 ```
 
