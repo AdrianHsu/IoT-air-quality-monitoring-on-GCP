@@ -1,16 +1,22 @@
 #include <ArduinoJson.h>
+#include <DHT.h>
 
 #define        COV_RATIO                       0.2            // ug / mmm / mv
 #define        NO_DUST_VOLTAGE                 400            // mv
 #define        SYS_VOLTAGE                     5000           
+#define        DHTTYPE                         DHT22
 
 const int iled = 7;                                            // drive the led of sensor
 const int vout = A0;                                           // analog input
 const int gas_ain = A3;
+const int dht_din = 8;
 const int delay_second = 10000;
 
 float density, voltage;
 int   adcvalue, ad_value;
+int   humidity, temperature;
+
+DHT dht(dht_din, DHTTYPE);
 
 // private function
 int Filter(int m) {
@@ -46,7 +52,7 @@ void setup(void) {
   pinMode(iled, OUTPUT);
   pinMode(gas_ain,INPUT);
   digitalWrite(iled, LOW); // iled default is closed
-  
+  dht.begin();
   Serial.begin(115200);
   // Serial.print("*********************************** WaveShare ***********************************\n");
 }
@@ -81,13 +87,21 @@ int mp135(void){
 //  Serial.println(" ppm");
 }
 
+int dht22(void){
+  humidity = dht.readHumidity();
+  temperature = dht.readTemperature();
+}
+
 void loop(void){
   hp2y();
   mp135();
+  dht22();
   StaticJsonDocument<256> doc;
 
-  doc["density"] = int(density);
-  doc["ad_value"] = ad_value;
+  doc["density"] = int(density); // convert to int
+  doc["ad_value"] = ad_value; // convert to int
+  doc["humidity"] = humidity; // convert to int
+  doc["temperature"] = temperature; // convert to int
 
   String output = "";
   serializeJson(doc, output);
