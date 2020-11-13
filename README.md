@@ -18,7 +18,8 @@ We would like to build an indoor air quality monitoring system having the follow
 
 * Low-cost: using cost-effective IOT board & sensors
 * Sync with Cloud: gather and visualize the sensing data in GCP
-* Notification: notify users when the air quality becomes too badTriggering: turn on air purifier automatically
+* Notification: notify users when the air quality becomes too bad
+* Triggering: turn on air purifier automatically
 
 
 
