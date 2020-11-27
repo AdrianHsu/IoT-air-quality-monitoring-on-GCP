@@ -30,7 +30,7 @@ In this part, you are going to apply Sendgrid API in the cloud function to send 
     ```
     sendgrid
     ```
-3. Copy the code from [hello_pubsub.py](https://github.com/AdrianHsu/IoT-air-quality-monitoring-on-gcp/blob/main/email-notification/hello_pubsub.py) and paste it to the code part in you cloud function. Following are some explanations for the each part of the code.
+3. Copy the code from [[hello_pubsub.py](https://github.com/AdrianHsu/IoT-air-quality-monitoring-on-gcp/blob/main/email-notification/hello_pubsub.py)] and paste it to the code part in you cloud function. Following are some explanations for the each part of the code.
      ### Receive Message
     ```python
     pubsub_message = base64.b64decode(event['data']).decode('utf-8')
@@ -95,5 +95,4 @@ In this part, you are going to apply Sendgrid API in the cloud function to send 
 
             print(e)
     ```
-
 Reference: https://stackoverflow.com/questions/62282170/whats-the-best-way-to-send-an-e-mail-via-python-google-cloud-function
