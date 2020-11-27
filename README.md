@@ -384,19 +384,33 @@ After gathering data from IoT devices to Pub/Sub topic, you can store the data i
 Please go throuth the following steps to store data from Pub/Sub topic to Google Clooud Storage.
 
 1. Create a bucket in [Google Cloud Storage](https://console.cloud.google.com/storage/browser), I used the bucket name **bucket-cs219** in this example.
-2. Go to [Topics](https://console.cloud.google.com/cloudpubsub/topic) of Pub/Sub and find the topic of this project.
-3. In the topic, find the **Export to Cloud Storage** under Topic details, and click **EXPORT TO TEXT**.
-4. In this place, we can set up a dataflow job that directs the messages from pub/sub to Google Cloud Storage in the plain text format. And here are the explanations of each parameter:
-  - **Job name:** you don’t need to change it, just use the default one.
-  - **Regional endpoint:** please use the region as your IoT device, like *us-central1*.
-  - **Dataflow template:** you don’t need to change it, just use the default one, which is *Pub/Sub to Text Files on Cloud Storage*.
-  - **Input Pub/Sub topic:** you don’t need to change it, the default one will be the current topic.
-  - **Output file directory in Cloud Storage:** this will be the directory that stores the output text files in Google Cloud Storage, the format will be like gs://[bucket name]/[directory path], e.g. *gs://bucket-cs219/airQuality*
-  - **Output filename prefix:** the prefix of each output text file name, can be like *output-*
-  - **Temporary location:** Directory for writing temporary files, the format will be like gs://[bucket name]/temp, e.g. *gs://bucket-cs219/temp*
-5. Click **RUN JOB** to create and run the job.
-6. In [Dataflow Jobs](https://console.cloud.google.com/dataflow/jobs), you can notice the created job, which has the name we specified in the above **Job name** parameter, this job’s responsibility is to transfer and store the data from Pub/Sub topic to the specified bucket in Google Cloud Storage.
-7. Go to [Google Cloud Storage](https://console.cloud.google.com/storage/browser) and check the specified bucket (bucker-cs-219), there will exist a folder specified by the **Output file directory in Cloud Storage** parameter above, in here it is *airQuality* that specified by *gs://bucket-cs219/airQuality*.
-8. Inside the folder, you can find one or more files that have the prefix specified by the **Output filename prefix** parameter above. E.g. *output-xxx*
-9. Each file can be downloaded by the **DOWNLOAD** button, and you can see the sensing data.
 
+2. Go to [Topics](https://console.cloud.google.com/cloudpubsub/topic) of Pub/Sub and find the topic of this project.
+
+3. In the topic, find the **Export to Cloud Storage** under Topic details, and click **EXPORT TO TEXT**.
+
+4. In this place, we can set up a dataflow job that directs the messages from pub/sub to Google Cloud Storage in the plain text format. And here are the explanations of each parameter:
+
+  - **Job name:** you don’t need to change it, just use the default one.
+
+  - **Regional endpoint:** please use the region as your IoT device, like *us-central1*.
+
+  - **Dataflow template:** you don’t need to change it, just use the default one, which is *Pub/Sub to Text Files on Cloud Storage*.
+
+  - **Input Pub/Sub topic:** you don’t need to change it, the default one will be the current topic.
+
+  - **Output file directory in Cloud Storage:** this will be the directory that stores the output text files in Google Cloud Storage, the format will be like gs://[bucket name]/[directory path], e.g. *gs://bucket-cs219/airQuality*
+
+  - **Output filename prefix:** the prefix of each output text file name, can be like *output-*
+  
+  - **Temporary location:** Directory for writing temporary files, the format will be like gs://[bucket name]/temp, e.g. *gs://bucket-cs219/temp*
+
+5. Click **RUN JOB** to create and run the job.
+
+6. In [Dataflow Jobs](https://console.cloud.google.com/dataflow/jobs), you can notice the created job, which has the name we specified in the above **Job name** parameter, this job’s responsibility is to transfer and store the data from Pub/Sub topic to the specified bucket in Google Cloud Storage.
+
+7. Go to [Google Cloud Storage](https://console.cloud.google.com/storage/browser) and check the specified bucket (bucker-cs-219), there will exist a folder specified by the **Output file directory in Cloud Storage** parameter above, in here it is *airQuality* that specified by *gs://bucket-cs219/airQuality*.
+
+8. Inside the folder, you can find one or more files that have the prefix specified by the **Output filename prefix** parameter above. E.g. *output-xxx*
+
+9. Each file can be downloaded by the **DOWNLOAD** button, and you can see the sensing data.
