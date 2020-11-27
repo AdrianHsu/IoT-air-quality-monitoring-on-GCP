@@ -23,7 +23,7 @@ Sendgrid is a third-party cloud based email platform that provide us api to send
 ## Step 3: Use Sendgrid API in Cloud Function
 In this part, you are going to apply Sendgrid API in the cloud function to send e-mail once you want to do noficitaion. Please go through the following steps to set up.
 1. In cloud function, you need to [create a environment variable](https://cloud.google.com/functions/docs/env-var#gcloud_5) EMAIL_API_KEY with the above sendgrid api key.
-    ```
+    ```python
     EMAIL_API_KEY = [Your Sendgrid API Key]
     ```
 2. Besides, you need to add the following to [**requirements.txt**](https://cloud.google.com/functions/docs/writing/specifying-dependencies-python).
@@ -32,16 +32,16 @@ In this part, you are going to apply Sendgrid API in the cloud function to send 
     ```
 3. Copy the code from [hello_pubsub.py](https://github.com/AdrianHsu/IoT-air-quality-monitoring-on-gcp/blob/main/email-notification/hello_pubsub.py) and paste it to the code part in you cloud function. Following are some explanations for the each part of the code.
      ### Receive Message
-    ```
+    ```python
     pubsub_message = base64.b64decode(event['data']).decode('utf-8')
     ```
     With the above code, you can receive the message from Pub/Sub topic in a string form such as: 
-    ```
+    ```python
     {ad_value: 23, density: 148.7598, humidity: 50, temperature: 29, timestamp: 1606114824}
     ```
     ### Process the data
     To use the above data, you need to process them and store them to an appropriate data structure. In this code, I store the processed data into a dictionary called **Info**.
-    ```
+    ```python
     pubsub_message = pubsub_message.strip()
     pubsub_message = pubsub_message[1:-1]
     pubsub_message_info = pubsub_message.split(',')
@@ -55,10 +55,10 @@ In this part, you are going to apply Sendgrid API in the cloud function to send 
         Info[metric] = value
     ```
      After the above code, the dictionary Info will have each item like
-     ```
+     ```python
      {  
       'ad_value': 23.0,
-      'density': ,148.7598,
+      'density': 148.7598,
       'humidity': 50,
       'temperature': 29
      }
@@ -66,7 +66,7 @@ In this part, you are going to apply Sendgrid API in the cloud function to send 
      
      ### Set Up the E-mail Notification
      In this example, whenever the dust density is higher than 500, the recipient will receive an e-mail with the subject **Dust is too much** that notifies the user to check the indoor dust.
-    ```
+    ```python
     if Info['density'] >= 500:
 
         message = Mail(
