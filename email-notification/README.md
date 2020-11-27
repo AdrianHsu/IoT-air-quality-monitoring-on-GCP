@@ -93,3 +93,5 @@ if Info['density'] >= 500:
 
 		print(e)
 ```
+
+Reference: https://stackoverflow.com/questions/62282170/whats-the-best-way-to-send-an-e-mail-via-python-google-cloud-function
